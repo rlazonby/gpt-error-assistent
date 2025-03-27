@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GPT-Fehlermeldungs-Assistent</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; max-width: 900px; margin: auto; background: #f9f9f9; }
+    textarea { width: 100%; height: 180px; padding: 10px; font-family: monospace; font-size: 14px; }
+    button { padding: 10px 20px; margin-top: 10px; }
+    .output { background: white; padding: 15px; margin-top: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>GPT-Fehlermeldungs-Assistent</h1>
+  <p>Füge eine beliebige Fehlermeldung ein. GPT analysiert sie und gibt eine Erklärung & Lösung.</p>
+  <textarea id="input" placeholder="Hier Fehlermeldung eingeben..."></textarea><br/>
+  <button onclick="analysieren()">Per GPT analysieren</button>
+  <div id="antwort" class="output"></div>
+
+  <script>
+    async function analysieren() {
+      const input = document.getElementById('input').value;
+      const antwort = document.getElementById('antwort');
+      antwort.textContent = 'Analysiere...';
+
+      const response = await fetch('https://gpt-fehlerassistent.roy.chatgpt.tools', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input })
+      });
+
+      const data = await response.json();
+      antwort.textContent = data.reply || 'Keine Antwort erhalten.';
+    }
+  </script>
+</body>
+</html>
